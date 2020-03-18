@@ -1,0 +1,6 @@
+<h1 class="page-header">Localização dos Apontamentos das Pragas</h1>
+
+<div googmap-map class="fullmap" ng-class="{'loading': $ctrl.loadingList || $ctrl.loadingMap}">
+  <googmap-marker ng-repeat="ponto in $ctrl.pontos" coords="ponto.coordenada" quantidade="ponto.quantidade"></googmap-marker>
+  <googmap-element />
+</div>

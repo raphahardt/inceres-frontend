@@ -1,0 +1,93 @@
+<h1 class="page-header">Apontamento de Formigueiros</h1>
+
+<div class="toolbar">
+  <button type="button" class="btn btn-primary" ng-click="$ctrl.addFormigueiro()">+ Apontamento</button>
+  <a ui-sref="formigueiros-mapa" class="btn btn-primary">Ver mapa</a>
+</div>
+
+<table class="table table-bordered table-striped" ng-class="{'loading': $ctrl.loadingList}">
+  <tr>
+    <th class="hidden-xs hidden-sm">Id</th>
+    <th>Data/Hora</th>
+    <th>Coordenada</th>
+    <th>Quantidade</th>
+    <th class="hidden-xs hidden-sm">Observações</th>
+    <th>Etiqueta</th>
+    <th></th>
+  </tr>
+  <tr ng-repeat="item in $ctrl.formigueiros as itens">
+    <td class="hidden-xs hidden-sm">{{ item.$id }}</td>
+    <td>{{ item.datahora|date:'dd/MM/yyyy HH:mm' }}</td>
+    <td><coord val="item.coordenada"></coord></td>
+    <td>{{ item.quantidade }}</td>
+    <td class="hidden-xs hidden-sm">{{ item.observacoes }}</td>
+    <td etiqueta="{{ item.quantidade }}"></td>
+    <td>
+      <a href ng-click="$ctrl.previewFormigueiro(item.$id)">Ver</a>
+    </td>
+  </tr>
+  <tr ng-if="!itens.length">
+    <td class="text-muted" colspan="7">Nenhum apontamento registrado.</td>
+  </tr>
+</table>
+
+<script type="text/ng-template" id="modal-edit.html">
+  <div class="modal-header">
+    <h3 class="modal-title" id="modal-title">{{ $modal.formigueiro.$id ? 'Editando apontamento do' : 'Apontar' }} Formigueiro</h3>
+  </div>
+  <div class="modal-body" id="modal-body">
+    <div class="form-modal">
+      <div class="form-modal-row">
+        <label class="form-modal-label" for="f-lat">Latitude:</label>
+        <div class="form-modal-content">
+          <div class="form-modal-row">
+            <input id="f-lat" type="number" ng-model="$modal.formigueiro.coordenada.lat" class="form-control" />
+            <label class="form-modal-label" for="f-lng">Longitude:</label>
+            <input id="f-lng" type="number" ng-model="$modal.formigueiro.coordenada.lng" class="form-control" />
+          </div>
+          <div class="text-danger">{{ $modal.formigueiro.$validacao()['coordenada'] }}</div>
+        </div>
+      </div>
+
+      <div class="form-modal-row">
+        <label class="form-modal-label" for="f-quantidade">Quantidade:</label>
+        <div class="form-modal-content">
+          <input id="f-quantidade" type="number" ng-model="$modal.formigueiro.quantidade" class="form-control" />
+          <div class="text-danger">{{ $modal.formigueiro.$validacao()['quantidade'] }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="$modal.confirm()" ng-disabled="$modal.formigueiro.$validacao() !== true">{{ $modal.formigueiro.$id ? 'Alterar' : 'Apontar' }}</button>
+    <button class="btn btn-default" type="button" ng-click="$modal.cancel()">Cancelar</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="modal-remove.html">
+  <div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Excluir apontamento do Formigueiro</h3>
+  </div>
+  <div class="modal-body" id="modal-body">
+    <p>Tem certeza que deseja excluir o apontamento ID {{ $modal.formigueiro.$id }}?
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-danger" type="button" ng-click="$modal.confirm()">Sim</button>
+    <button class="btn btn-default" type="button" ng-click="$modal.cancel()">Não</button>
+  </div>
+</script>
+
+<script type="text/ng-template" id="modal-preview.html">
+  <div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Ver apontamento do Formigueiro</h3>
+  </div>
+  <div class="modal-body" id="modal-body">
+    <div googmap-map class="previewmap" ng-class="{'loading': $modal.loadingMap}">
+      <googmap-marker coords="$modal.formigueiro.coordenada" quantidade="$modal.formigueiro.quantidade"></googmap-marker>
+      <googmap-element />
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="$modal.close()">Fechar</button>
+  </div>
+</script>

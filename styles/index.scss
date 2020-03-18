@@ -1,0 +1,154 @@
+body {
+  padding-top: 50px;
+  background: #f5f5f5;
+  
+  @media (min-width: 768px) {
+    .navbar-collapse.collapse {
+      display: none !important;
+    }
+  }
+  
+  // adaptado de: https://getbootstrap.com/docs/3.3/examples/dashboard/
+  .sub-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .navbar-fixed-top {
+    border: 0;
+  }
+  
+  // o sidebar
+  .sidebar {
+    display: none;
+    @media (min-width: 768px) {
+      & {
+        position: fixed;
+        top: 51px;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        display: block;
+        padding: 20px;
+        overflow-x: hidden;
+        overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+        background-color: #f5f5f5;
+        border-right: 1px solid #eee;
+      }
+    }
+  }
+
+  /* Sidebar navigation */
+  .nav-sidebar {
+    margin-right: -21px; /* 20px padding + 1px border */
+    margin-bottom: 20px;
+    margin-left: -20px;
+    & > li > a {
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+    & > .active > a,
+    & > .active > a:hover,
+    & > .active > a:focus {
+      color: #fff;
+      background-color: #428bca;
+    }
+  }
+  
+  // o conteudo principal
+  .main {
+    padding: 20px;
+    @media (min-width: 768px) {
+      & {
+        padding-right: 40px;
+        padding-left: 40px;
+      }
+    }
+    .page-header {
+      margin-top: 0;
+      font-size: 2.4rem;
+      @media (min-width: 768px) {
+        & {
+          font-size: 3.5rem;
+        }
+      }
+    }
+  }
+  
+  // um efeito simplezinho que cobre um elemento com
+  // um overlay cinza pra fazer loading em qualquer lugar
+  // deixei fácil e útil de usar: só colocar esta class no elemento
+  .loading {
+    position: relative;
+    &:after {
+      position: absolute;
+      z-index: 9999;
+      content: '';
+      display: block;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      opacity: .9;
+      background-color: #eee;
+      background-image: linear-gradient(to right, #eee 0%, #fcfcfc 50%, #eee 100%);
+      background-repeat: repeat-y;
+      background-size: 200px;
+      animation-name: loadingAnimacao;
+      animation-duration: 1.4s;
+      animation-iteration-count: infinite;
+    }
+  }
+  
+  .fullmap, .previewmap {
+    display: block;
+    width: 100%;
+    position: relative;
+    
+    .fullmap-inner {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  }
+  .fullmap {
+    height: calc(100vh - 250px);
+  }
+  .previewmap {
+    height: 50vh;
+  }
+  
+  .toolbar {
+    margin-bottom: 20px;
+  }
+  
+  .form-modal {
+    .form-modal-row {
+      display: flex;
+      flex-direction: row;
+      align-items: start;
+      justify-content: stretch;
+      margin-bottom: 8px;
+      
+      .form-modal-label {
+        width: 100px;
+        min-width: 100px;
+        margin: 6px;
+        text-align: right;
+      }
+      
+      .form-modal-content {
+        flex-grow: 1;
+      }
+      
+      .form-modal-row {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+@keyframes loadingAnimacao {
+  from { background-position-x: -200px }
+  to { background-position-x: calc(100% + 200px) }
+}
