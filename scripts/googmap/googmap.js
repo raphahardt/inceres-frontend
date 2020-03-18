@@ -1,0 +1,1 @@
+angular.module('app.googmap', ['app.utils', 'app.etiqueta', 'ui.router'])

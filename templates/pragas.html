@@ -15,13 +15,13 @@
     <th>Etiqueta</th>
     <th></th>
   </tr>
-  <tr ng-repeat="item in $ctrl.pragas as itens">
+  <tr ng-repeat="item in $ctrl.pragas as itens" ng-class="{'loading': $ctrl.loadingItems[item.$id]}">
     <td class="hidden-xs hidden-sm">{{ item.$id }}</td>
     <td>{{ item.datahora|date:'dd/MM/yyyy HH:mm' }}</td>
     <td><coord val="item.coordenada"></coord></td>
     <td>{{ item.quantidade }}</td>
     <td class="hidden-xs hidden-sm">{{ item.observacoes }}</td>
-    <td etiqueta="{{ item.quantidade }}"></td>
+    <td ng-style="{'background-color': (item.quantidade|etiquetaCor)}"></td>
     <td>
       <a href ng-click="$ctrl.previewPraga(item.$id)">Ver</a>
     </td>
@@ -33,7 +33,7 @@
 
 <script type="text/ng-template" id="modal-edit.html">
   <div class="modal-header">
-    <h3 class="modal-title" id="modal-title">{{ $modal.praga.$id ? 'Editando apontamento de' : 'Apontar' }} Praga</h3>
+    <h3 class="modal-title" id="modal-title">{{ praga.$id ? 'Editando apontamento de' : 'Apontar' }} Praga</h3>
   </div>
   <div class="modal-body" id="modal-body">
     <div class="form-modal">
@@ -41,25 +41,25 @@
         <label class="form-modal-label" for="f-lat">Latitude:</label>
         <div class="form-modal-content">
           <div class="form-modal-row">
-            <input id="f-lat" type="number" ng-model="$modal.praga.coordenada.lat" class="form-control" />
+            <input id="f-lat" type="number" ng-model="praga.coordenada.lat" class="form-control" />
             <label class="form-modal-label" for="f-lng">Longitude:</label>
-            <input id="f-lng" type="number" ng-model="$modal.praga.coordenada.lng" class="form-control" />
+            <input id="f-lng" type="number" ng-model="praga.coordenada.lng" class="form-control" />
           </div>
-          <div class="text-danger">{{ $modal.praga.$validacao()['coordenada'] }}</div>
+          <div class="text-danger">{{ praga.$errors['coordenada'] }}</div>
         </div>
       </div>
       
       <div class="form-modal-row">
         <label class="form-modal-label" for="f-quantidade">Quantidade:</label>
         <div class="form-modal-content">
-          <input id="f-quantidade" type="number" ng-model="$modal.praga.quantidade" class="form-control" />
-          <div class="text-danger">{{ $modal.praga.$validacao()['quantidade'] }}</div>
+          <input id="f-quantidade" type="number" ng-model="praga.quantidade" class="form-control" />
+          <div class="text-danger">{{ praga.$errors['quantidade'] }}</div>
         </div>
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="$modal.confirm()" ng-disabled="$modal.praga.$validacao() !== true">{{ $modal.praga.$id ? 'Alterar' : 'Apontar' }}</button>
+    <button class="btn btn-primary" type="button" ng-click="$modal.confirm()" ng-disabled="praga.$errors">{{ praga.$id ? 'Alterar' : 'Apontar' }}</button>
     <button class="btn btn-default" type="button" ng-click="$modal.cancel()">Cancelar</button>
   </div>
 </script>
@@ -69,7 +69,7 @@
     <h3 class="modal-title" id="modal-title">Excluir apontamento de Praga</h3>
   </div>
   <div class="modal-body" id="modal-body">
-    <p>Tem certeza que deseja excluir o apontamento ID {{ $modal.praga.$id }}?
+    <p>Tem certeza que deseja excluir o apontamento ID {{ praga }}?
   </div>
   <div class="modal-footer">
     <button class="btn btn-danger" type="button" ng-click="$modal.confirm()">Sim</button>
@@ -83,7 +83,7 @@
   </div>
   <div class="modal-body" id="modal-body">
     <div googmap-map class="previewmap" ng-class="{'loading': $modal.loadingMap}">
-      <googmap-marker coords="$modal.praga.coordenada" quantidade="$modal.praga.quantidade"></googmap-marker>
+      <googmap-marker coords="praga.coordenada" quantidade="praga.quantidade"></googmap-marker>
       <googmap-element />
     </div>
   </div>

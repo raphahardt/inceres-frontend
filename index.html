@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="fieldNotebook" googmap-key="AIzaSyCR2A-uJy4NsccYbGNVXGqWCGMgwI5YZpA">
+<html lang="en" ng-app="fieldNotebook-dev" googmap-key="AIzaSyCR2A-uJy4NsccYbGNVXGqWCGMgwI5YZpA">
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,22 +11,7 @@
   <link rel="stylesheet" href="styles/index.processed.css">
 </head>
 <body>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" ng-click="navConfig.toggle()" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Abrir menu</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" ui-sref="home">Field Notebook</a>
-      </div>
-      <div id="navbar" class="navbar-collapse collapse" uib-collapse="navConfig.topCollapsed" aria-expanded="false" style="height: 1px;">
-        <nav-menu type="top"></nav-menu>
-      </div>
-    </div>
-  </nav>
+  <navbar></navbar>
   
   <div class="container-fluid">
     <div class="row">
@@ -41,9 +26,35 @@
   
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-mocks.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.25/angular-ui-router.min.js"></script>
   <script src="ui-bootstrap-custom-tpls-2.5.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+  <script src="scripts/utils.js"></script>
+  <script src="scripts/coordenada.js"></script>
+  <script src="scripts/navigation/navigation.js"></script>
+  <script src="scripts/navigation/services/navs.js"></script>
+  <script src="scripts/navigation/directives/navbar.js"></script>
+  <script src="scripts/navigation/directives/nav-menu.js"></script>
+  <script src="scripts/navigation/directives/collapse-button.js"></script>
+  <script src="scripts/etiqueta/etiqueta.js"></script>
+  <script src="scripts/etiqueta/filters/etiqueta-cor.js"></script>
+  <script src="scripts/etiqueta/directives/etiqueta.js"></script>
+  <script src="scripts/googmap/googmap.js"></script>
+  <script src="scripts/googmap/services/googmap-service.js"></script>
+  <script src="scripts/googmap/directives/googmap-key.js"></script>
+  <script src="scripts/googmap/directives/googmap-map.js"></script>
+  <script src="scripts/googmap/directives/googmap-marker.js"></script>
+  <script src="scripts/app/app.js"></script>
+  <script src="scripts/app/services/collection.js"></script>
+  <script src="scripts/app/controllers/praga.js"></script>
+  <script src="scripts/app/controllers/praga-mapa.js"></script>
+  <script src="scripts/app/controllers/praga-modal-edit-remove.js"></script>
+  <script src="scripts/app/controllers/praga-modal-preview.js"></script>
+  <script src="scripts/app/resources/praga.js"></script>
+  <script src="scripts/app/resources/praga-collection.js"></script>
   <script src="scripts/index.js"></script>
   <script src="scripts/states.js"></script>
+  <script src="scripts/index-dev.js"></script>
 </body>
 </html>
