@@ -28,15 +28,22 @@ angular.module('fieldNotebook-dev', ['fieldNotebook', 'ngMockE2E'])
 	 * Definição dos fixtures
 	 */
 	.run(['$httpBackend', function ($httpBackend) {
-		let nextUuid = 3;
-		let pragas = [
-			{$id: 1, datahora: new Date(), coordenada: {lat: -22.610234, lng: -47}, quantidade: 1, observacoes: 'Teste de observação'},
-			{$id: 2, datahora: new Date(), coordenada: {lat: -23, lng: -47.406200}, quantidade: 3},
-		];
+		let nextUuid = 1;
+		let pragas = [];
 		let formigueiros = [];
 
+		if (window.sessionStorage && window.sessionStorage.getItem) {
+			pragas = angular.fromJson(window.sessionStorage.getItem('collection-pragas') || '[]');
+			formigueiros = angular.fromJson(window.sessionStorage.getItem('collection-formigueiros') || '[]');
+		}
 
-		function respondGET(items) {
+		function _saveStorage(items, collName) {
+			if (window.sessionStorage && window.sessionStorage.setItem) {
+				window.sessionStorage.setItem(`collection-${collName}`, angular.toJson(items));
+			}
+		}
+
+		function respondGET(items, collName) {
 			return function (method, url, data, headers, params) {
 				if (params.id) {
 					const item = _.find(items, (item) => item.$id === Number.parseInt(params.id));
@@ -46,7 +53,7 @@ angular.module('fieldNotebook-dev', ['fieldNotebook', 'ngMockE2E'])
 			}
 		}
 
-		function respondPOST(items) {
+		function respondPOST(items, collName) {
 			return function (method, url, data, headers, params) {
 				// PUT e POST, os request data vem em string, então normalizo os dados
 				if (typeof data === 'string') {
@@ -57,11 +64,12 @@ angular.module('fieldNotebook-dev', ['fieldNotebook', 'ngMockE2E'])
 				item.$id = nextUuid;
 				nextUuid++;
 				items.push(item);
+				_saveStorage(items, collName);
 				return [201, item, {}];
 			}
 		}
 
-		function respondPUT(items) {
+		function respondPUT(items, collName) {
 			return function (method, url, data, headers, params) {
 				// PUT e POST, os request data vem em string, então normalizo os dados
 				if (typeof data === 'string') {
@@ -72,6 +80,7 @@ angular.module('fieldNotebook-dev', ['fieldNotebook', 'ngMockE2E'])
 				if (params.id) {
 					const index = _.findIndex(items, (item) => item.$id === Number.parseInt(params.id));
 					items.splice(index, 1, data);
+					_saveStorage(items, collName);
 					return [200, data, {}];
 				}
 
@@ -79,11 +88,12 @@ angular.module('fieldNotebook-dev', ['fieldNotebook', 'ngMockE2E'])
 			}
 		}
 
-		function respondDELETE(items) {
+		function respondDELETE(items, collName) {
 			return function (method, url, data, headers, params) {
 				if (params.id) {
 					const index = _.findIndex(items, (item) => item.$id === Number.parseInt(params.id));
 					items.splice(index, 1);
+					_saveStorage(items, collName);
 					return [200, true, {}];
 				}
 
@@ -91,15 +101,15 @@ angular.module('fieldNotebook-dev', ['fieldNotebook', 'ngMockE2E'])
 			}
 		}
 
-		$httpBackend.when('GET', /^\/api\/pragas(\?id=\d+)?/).respond(respondGET(pragas));
-		$httpBackend.when('POST', '/api/pragas').respond(respondPOST(pragas));
-		$httpBackend.when('PUT', /^\/api\/pragas(\?id=\d+)?/).respond(respondPUT(pragas));
-		$httpBackend.when('DELETE', /^\/api\/pragas\?id=\d+/).respond(respondDELETE(pragas));
+		$httpBackend.when('GET', /^\/api\/pragas(\?id=\d+)?/).respond(respondGET(pragas, 'pragas'));
+		$httpBackend.when('POST', '/api/pragas').respond(respondPOST(pragas, 'pragas'));
+		$httpBackend.when('PUT', /^\/api\/pragas(\?id=\d+)?/).respond(respondPUT(pragas, 'pragas'));
+		$httpBackend.when('DELETE', /^\/api\/pragas\?id=\d+/).respond(respondDELETE(pragas, 'pragas'));
 
-		$httpBackend.when('GET', /^\/api\/formigueiros(\?id=\d+)?/).respond(respondGET(formigueiros));
-		$httpBackend.when('POST', '/api/formigueiros').respond(respondPOST(formigueiros));
-		$httpBackend.when('PUT', /^\/api\/formigueiros(\?id=\d+)?/).respond(respondPUT(formigueiros));
-		$httpBackend.when('DELETE', /^\/api\/formigueiros\?id=\d+/).respond(respondDELETE(formigueiros));
+		$httpBackend.when('GET', /^\/api\/formigueiros(\?id=\d+)?/).respond(respondGET(formigueiros, 'formigueiros'));
+		$httpBackend.when('POST', '/api/formigueiros').respond(respondPOST(formigueiros, 'formigueiros'));
+		$httpBackend.when('PUT', /^\/api\/formigueiros(\?id=\d+)?/).respond(respondPUT(formigueiros, 'formigueiros'));
+		$httpBackend.when('DELETE', /^\/api\/formigueiros\?id=\d+/).respond(respondDELETE(formigueiros, 'formigueiros'));
 
 		// pra os /templates continuarem sendo chamados normalmente, sem passar
 		// pelo mock

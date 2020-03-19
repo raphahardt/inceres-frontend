@@ -45,7 +45,7 @@
             <label class="form-modal-label" for="f-lng">Longitude:</label>
             <input id="f-lng" type="number" ng-model="praga.coordenada.lng" class="form-control" />
           </div>
-          <div class="text-danger">{{ praga.$errors['coordenada'] }}</div>
+          <div class="text-danger">{{ $errors['coordenada'] }}</div>
         </div>
       </div>
       
@@ -53,13 +53,13 @@
         <label class="form-modal-label" for="f-quantidade">Quantidade:</label>
         <div class="form-modal-content">
           <input id="f-quantidade" type="number" ng-model="praga.quantidade" class="form-control" />
-          <div class="text-danger">{{ praga.$errors['quantidade'] }}</div>
+          <div class="text-danger">{{ $errors['quantidade'] }}</div>
         </div>
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="$modal.confirm()" ng-disabled="praga.$errors">{{ praga.$id ? 'Alterar' : 'Apontar' }}</button>
+    <button class="btn btn-primary" type="button" ng-click="$modal.confirm()" ng-disabled="$hasErrors">{{ praga.$id ? 'Alterar' : 'Apontar' }}</button>
     <button class="btn btn-default" type="button" ng-click="$modal.cancel()">Cancelar</button>
   </div>
 </script>

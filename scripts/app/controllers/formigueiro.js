@@ -1,39 +1,39 @@
 angular.module('app.controllers')
-	.controller('PragaController', ['PragaCollection', 'Praga', '$uibModal', '$scope', function (PragaCollection, Praga, $uibModal, $scope) {
+	.controller('FormigueiroController', ['FormigueiroCollection', 'Formigueiro', '$uibModal', '$scope', function (FormigueiroCollection, Formigueiro, $uibModal, $scope) {
 		this.loadingList = true;
 		this.loadingItems = {};
-		this.pragas = [];
+		this.formigueiros = [];
 
-		PragaCollection.getAll()
-			.then((pragas) => {
-				this.pragas = pragas;
+		FormigueiroCollection.getAll()
+			.then((formigueiros) => {
+				this.formigueiros = formigueiros;
 			})
 			.finally(() => {
 				this.loadingList = false;
 			})
 
-		this.addPraga = () => {
-			var praga = new Praga();
-			praga.datahora = new Date();
+			this.addFormigueiro = () => {
+			var formigueiro = new Formigueiro();
+			formigueiro.datahora = new Date();
 
 			var modalInstance = $uibModal.open({
 				ariaLabelledBy: 'modal-title',
 				ariaDescribedBy: 'modal-body',
 				templateUrl: 'modal-edit.html',
-				controller: 'PragaModalEditRemoveController',
+				controller: 'FormigueiroModalEditRemoveController',
 				controllerAs: '$modal',
 				resolve: {
-					praga: () => praga
+					formigueiro: () => formigueiro
 				}
 			});
 
-			modalInstance.result.then((praga) => {
+			modalInstance.result.then((formigueiro) => {
 				this.loadingList = true;
-				return PragaCollection.insert(praga);
+				return FormigueiroCollection.insert(formigueiro);
 			})
-				.then((praga) => {
+				.then((formigueiro) => {
 					// atualiza a lista
-					this.pragas.push(praga);
+					this.formigueiros.push(formigueiro);
 				})
 				.catch(err => {
 					if (err instanceof Error) {
@@ -45,26 +45,26 @@ angular.module('app.controllers')
 				});
 		}
 
-		this.editPraga = (id) => {
+		this.editFormigueiro = (id) => {
 			var modalInstance = $uibModal.open({
 				ariaLabelledBy: 'modal-title',
 				ariaDescribedBy: 'modal-body',
 				templateUrl: 'modal-edit.html',
-				controller: 'PragaModalEditRemoveController',
+				controller: 'FormigueiroModalEditRemoveController',
 				controllerAs: '$modal',
 				resolve: {
-					praga: () => PragaCollection.get(id)
+					formigueiro: () => FormigueiroCollection.get(id)
 				}
 			});
 
-			modalInstance.result.then((praga) => {
+			modalInstance.result.then((formigueiro) => {
 				this.loadingItems[id] = true;
-				return PragaCollection.update(id, praga);
+				return FormigueiroCollection.update(id, formigueiro);
 			})
-				.then((praga) => {
+				.then((formigueiro) => {
 					// atualiza a lista
-					let index = _.findIndex(this.pragas, (o) => o.$id === id);
-					this.pragas.splice(index, 1, praga);
+					let index = _.findIndex(this.formigueiros, (o) => o.$id === id);
+					this.formigueiros.splice(index, 1, formigueiro);
 				})
 				.catch(err => {
 					if (err instanceof Error) {
@@ -76,26 +76,26 @@ angular.module('app.controllers')
 				});
 		}
 
-		this.removePraga = (id) => {
+		this.removeFormigueiro = (id) => {
 			var modalInstance = $uibModal.open({
 				ariaLabelledBy: 'modal-title',
 				ariaDescribedBy: 'modal-body',
 				templateUrl: 'modal-remove.html',
-				controller: 'PragaModalEditRemoveController',
+				controller: 'FormigueiroModalEditRemoveController',
 				controllerAs: '$modal',
 				resolve: {
-					praga: id
+					formigueiro: id
 				}
 			});
 
 			modalInstance.result.then(() => {
 				this.loadingItems[id] = true;
-				return PragaCollection.remove(id);
+				return FormigueiroCollection.remove(id);
 			})
-				.then((praga) => {
+				.then((formigueiro) => {
 					// atualiza a lista
-					let index = _.findIndex(this.pragas, (o) => o.$id === id);
-					this.pragas.splice(index, 1);
+					let index = _.findIndex(this.formigueiros, (o) => o.$id === id);
+					this.formigueiros.splice(index, 1);
 				})
 				.catch(err => {
 					if (err instanceof Error) {
@@ -107,15 +107,15 @@ angular.module('app.controllers')
 				});
 		}
 
-		this.previewPraga = (id) => {
+		this.previewFormigueiro = (id) => {
 			var modalInstance = $uibModal.open({
 				ariaLabelledBy: 'modal-title',
 				ariaDescribedBy: 'modal-body',
 				templateUrl: 'modal-preview.html',
-				controller: 'PragaModalPreviewController',
+				controller: 'FormigueiroModalPreviewController',
 				controllerAs: '$modal',
 				resolve: {
-					praga: () => PragaCollection.get(id)
+					formigueiro: () => FormigueiroCollection.get(id)
 				}
 			});
 

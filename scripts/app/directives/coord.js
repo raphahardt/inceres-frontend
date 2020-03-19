@@ -1,4 +1,4 @@
-angular.module('app.coordenada', [])
+angular.module('app.directives')
 	/**
 	 * Elemento pra formatar uma coordenada com icone e amigável pro usuário
 	 */

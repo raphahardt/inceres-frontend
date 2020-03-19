@@ -1,5 +1,4 @@
 const dependencies = [
-  'app.coordenada',
   'app.navigation',
   'app.etiqueta',
   'app.googmap',
